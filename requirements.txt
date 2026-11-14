@@ -1,0 +1,2 @@
+# Dépendances à préciser au fil du développement.
+-e .
