@@ -107,13 +107,6 @@ Frontend build:
 cd frontend/angular-app
 npm run build
 ```
-
-## Author
-
-**Abdellah Maachi**  
-Master's Student in Advanced Machine Learning and Multimedia Intelligence (MLAIM)  
-Faculty of Sciences Dhar El Mahraz (FSDM), Fez, Morocco
-
 ---
 
 *Academic and research project. AI-generated legal information should be verified against authoritative sources and does not constitute legal advice.*
