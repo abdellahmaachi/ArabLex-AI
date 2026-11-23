@@ -1,0 +1,36 @@
+:host { display: block; }
+.skip-link { position: fixed; top: -100px; left: 1rem; z-index: 100; padding: 1rem; background: white; }
+.skip-link:focus { top: 1rem; }
+.sidebar { position: fixed; inset: 0 auto 0 0; width: 256px; z-index: 40; background: white; border-right: 1px solid var(--color-border); padding: 2rem 1.2rem 1rem; display: flex; flex-direction: column; overflow-y: auto; }
+.brand { display: flex; gap: .7rem; align-items: center; padding: 0 .7rem; text-decoration: none; margin-bottom: 2.9rem; }
+.brand strong { display: block; font-size: 1.45rem; white-space: nowrap; letter-spacing: -.045em; line-height: 1.1; }
+.brand-dot { color: var(--color-primary); }
+.brand small { display: block; font-size: .55rem; letter-spacing: .08em; font-weight: 700; margin-top: .35rem; color: var(--color-muted); }
+.workspace-label, .nav-label { font-size: .7rem; letter-spacing: .12em; color: var(--color-muted); font-weight: 600; padding: 0 .85rem; }
+.workspace-label { margin-bottom: .8rem; }
+.nav-label { margin: 1.8rem 0 .7rem; }
+nav a { display: flex; align-items: center; gap: .85rem; min-height: 48px; padding: .7rem .85rem; margin-bottom: .35rem; border-radius: 8px; text-decoration: none; font-size: .9rem; font-weight: 500; color: var(--color-muted); }
+nav a:hover { background: var(--color-canvas); color: var(--color-primary); }
+nav a.active { background: var(--color-primary-soft); color: var(--color-primary); font-weight: 650; }
+.sidebar-bottom { margin-top: auto; padding-top: 3rem; }
+.sidebar-note { padding: 1rem; background: linear-gradient(140deg, #f0f5ff, #f8faff); border: 1px solid #e6edfb; border-radius: 12px; }
+.note-icon { display: block; color: var(--color-primary); margin-bottom: .5rem; }
+.sidebar-note strong { font-size: .85rem; }
+.sidebar-note p { font-size: .8rem; line-height: 1.65; margin: .4rem 0 0; color: var(--color-muted); }
+.help-link { display: flex; gap: .6rem; align-items: center; font-size: .85rem; text-decoration: none; padding: 1.4rem .3rem; }
+.sidebar-footer { border-top: 1px solid var(--color-border); padding-top: 1rem; display: grid; gap: .1rem; font-size: .7rem; color: var(--color-muted); }
+.workspace { margin-left: 256px; }
+.topbar { height: 82px; background: #ffffffed; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; padding: 0 2.5rem; gap: 1rem; }
+.topbar-left, .topbar-right { display: flex; align-items: center; gap: 1rem; }
+.topbar-title { font-size: .9rem; font-weight: 600; }
+.topbar-divider { height: 18px; width: 1px; background: var(--color-border); }
+.topbar-subtitle { font-size: .8rem; color: var(--color-muted); }
+.preview-badge { font-size: .75rem; padding: .3rem .65rem; border: 1px solid var(--color-border); border-radius: 6px; color: var(--color-muted); }
+.avatar { display: grid; place-items: center; width: 36px; height: 36px; background: var(--color-primary-soft); color: var(--color-primary); font-weight: 600; border: 3px solid white; outline: 1px solid var(--color-border); border-radius: 50%; }
+main { max-width: 1440px; padding: 2.2rem 2.5rem 1.5rem; margin: auto; min-height: calc(100dvh - 145px); }
+.footer { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 2.5rem 1.5rem; font-size: .75rem; color: var(--color-muted); }
+.menu-toggle { display: none; border: 0; background: transparent; padding: .65rem; color: var(--color-text); }
+.backdrop { display: none; }
+@media (max-width: 1150px) { .topbar-subtitle, .topbar-divider { display: none; } main { padding: 1.5rem; } .topbar { padding: 0 1.5rem; } }
+@media (max-width: 900px) { .sidebar { display: none; top: 72px; } .sidebar.is-open { display: flex; } .workspace { margin-left: 0; } .menu-toggle { display: inline-flex; } .topbar { height: 72px; position: sticky; top: 0; z-index: 50; padding: 0 1rem; } .backdrop { display: block; position: fixed; inset: 72px 0 0; background: #14294b55; border: 0; z-index: 30; } .footer { padding: 1rem 1.5rem; } }
+@media (max-width: 540px) { main { padding: 1.25rem 1rem; } .topbar-left { gap: .25rem; } .topbar-right { gap: .5rem; } .preview-badge { display: none; } .footer { flex-direction: column; gap: .3rem; } }

@@ -1,0 +1,34 @@
+<div class="chat-shell">
+  <header class="chat-header"><div class="assistant-heading"><span class="assistant-icon"><app-icon name="spark" /></span><div><h1>Assistant juridique</h1><p>ArabLex IA · Réponses documentées</p></div></div><button class="button button-secondary new-chat" type="button" [disabled]="loading()" (click)="newConversation()"><app-icon name="plus" /><span>Nouvelle conversation</span></button></header>
+  <div class="conversation" #conversation role="log" aria-label="Conversation juridique" aria-live="polite" [attr.aria-busy]="loading()">
+    @if (!turns().length) {
+      <section class="chat-welcome"><img src="logo.svg" width="60" height="60" alt=""><p class="eyebrow">VOTRE PARTENAIRE DE RECHERCHE</p><h2>Une question de droit ?<br><span>Commençons par les sources.</span></h2><p>Interrogez votre corpus juridique en arabe.<br>Retrouvez une réponse et les passages qui l’éclairent.</p><div class="suggestions">@for (suggestion of suggestions; track suggestion) {<button type="button" dir="rtl" lang="ar" (click)="useSuggestion(suggestion)">{{ suggestion }}</button>}</div></section>
+    }
+    @for (turn of turns(); track turn.id) {
+      <article class="chat-turn"><div class="user-message"><span class="message-label">Vous</span><p dir="auto">{{ turn.request.question }}</p></div>
+      <div class="assistant-message"><span class="response-avatar"><app-icon name="spark" /></span><div class="response-content"><strong class="message-label">ArabLex IA</strong>
+        @if (turn.response; as response) {
+          <p class="answer" dir="auto">{{ response.answer }}</p>
+          <div class="citation-status" [class.citation-warning]="response.citation_status === 'missing'"><app-icon name="book" />{{ citationLabels[response.citation_status] }}</div>
+          @if (response.sources.length) {
+            <details class="sources"><summary>Sources documentaires <span>{{ response.sources.length }}</span></summary><div class="sources-grid">@for (source of response.sources; track source.reference) {
+              <details class="source-card"><summary><span class="reference">{{ source.reference }}</span><bdi>{{ source.passage.document_id }}</bdi><small>{{ source.cited ? 'Citée' : 'Consultée' }}</small></summary><p dir="auto">{{ source.passage.text }}</p><small>Similarité : {{ source.score | number:'1.3-3' }}</small></details>
+            }</div></details>
+          }
+          @if (!response.sources.length) { <p class="no-sources">Aucun passage source disponible.</p> }
+        } @else if (turn.error) {
+          <div class="chat-error"><p role="alert">{{ turn.error }}</p><button type="button" class="button button-secondary" (click)="retry(turn)" [disabled]="loading()">Réessayer</button></div>
+        } @else { <p class="thinking" role="status">Recherche dans les documents et préparation de la réponse…</p> }
+      </div></div></article>
+    }
+  </div>
+  <div class="composer-area"><form #form="ngForm" (ngSubmit)="submit(form)">
+    <details class="search-options"><summary><app-icon name="settings" />Paramètres de recherche</summary><div class="options-grid">
+      <label>Passages<input name="topK" type="number" [(ngModel)]="topK" required min="1" step="1" pattern="[0-9]+"></label>
+      <label>Classe<select name="className" [(ngModel)]="className"><option value="">Toutes les classes</option><option value="family_inheritance">الأسرة والميراث</option><option value="real_estate">العقار</option></select></label>
+      <label>Document<input name="documentId" [(ngModel)]="documentId" placeholder="Identifiant facultatif"></label>
+      <label>Seuil de similarité<input name="scoreThreshold" type="number" [(ngModel)]="scoreThreshold" min="-1" max="1" step="any" placeholder="Facultatif"></label>
+    </div></details>
+    <div class="composer-box"><label class="visually-hidden" for="question">Votre question juridique</label><textarea #composer id="question" name="question" [(ngModel)]="question" dir="auto" rows="2" required placeholder="Posez votre question juridique…" (keydown)="onKeydown($event, form)"></textarea><button class="send-button" type="submit" [disabled]="form.invalid || !question.trim() || loading()" aria-label="Envoyer la question"><app-icon name="send" /></button></div>
+  </form><p class="chat-footnote">Entrée pour envoyer · Maj + Entrée pour une nouvelle ligne.<br>Chaque question est analysée indépendamment. Vérifiez les sources ; l’historique reste disponible sur cet écran.</p></div>
+</div>

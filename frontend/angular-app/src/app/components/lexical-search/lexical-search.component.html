@@ -1,0 +1,18 @@
+<app-tool-header icon="search" title="Recherche lexicale" description="Retrouvez les documents pertinents à partir de mots-clés, puis explorez les textes à leur source." />
+<form #form="ngForm" (ngSubmit)="submit(form)" [attr.aria-busy]="state.loading()">
+  <label for="lexical-query">Que recherchez-vous ?</label><textarea class="search-field" id="lexical-query" name="query" dir="auto" [(ngModel)]="query" required placeholder="Saisissez des mots-clés ou une expression juridique…"></textarea>
+  <div class="filters"><label>Nombre de résultats<input name="k" type="number" [(ngModel)]="k" required min="0" step="1" pattern="[0-9]+"></label><label>Score minimum<input name="minScore" type="number" [(ngModel)]="minScore" required min="-1" max="1" step="any"></label><label>Classe<select name="className" [(ngModel)]="className"><option value="">Toutes les classes</option><option value="family_inheritance">الأسرة والميراث</option><option value="real_estate">العقار</option></select></label></div>
+  <button type="submit" [disabled]="form.invalid || !query.trim() || state.loading()"><app-icon name="search" />{{ state.loading() ? 'Recherche en cours…' : 'Rechercher' }}</button>
+</form>
+<app-request-status [loading]="state.loading()" [error]="state.error()" />
+<section class="result-panel" aria-label="Résultats" aria-live="polite">
+@if (state.result(); as result) {
+  <div class="results-heading"><h2>{{ result.results.length }} document(s) trouvé(s)</h2><span class="chip" dir="auto">{{ result.selected_class | classLabel }}</span></div>
+  <div class="chips">@for (token of result.tokens; track $index) {<span dir="auto">{{ token }}</span>}</div>
+  @for (hit of result.results; track hit.id) {
+    <article class="document-card"><div class="document-heading"><span class="document-icon"><app-icon name="document" /></span><div><h3 dir="auto">{{ hit.filename || hit.id }}</h3><span class="document-category" dir="auto">{{ hit.class | classLabel }}</span></div><span class="score">Similarité {{ hit.score | number:'1.3-3' }}</span></div><p class="excerpt" dir="auto">{{ hit.text }}</p><details><summary>Lire le document complet</summary><p class="text" dir="auto">{{ hit.text }}</p><small>Identifiant : <bdi>{{ hit.id }}</bdi></small></details></article>
+  } @empty { <div class="empty-state"><app-icon name="search" /><h3>Aucun résultat pour cette recherche.</h3><p>Essayez d’autres mots-clés ou ajustez les filtres.</p></div> }
+} @else {
+  <div class="empty-state"><span class="empty-icon"><app-icon name="search" /></span><h3>Votre recherche commence ici.</h3><p>Saisissez une expression pour explorer le corpus juridique.</p></div>
+}
+</section>

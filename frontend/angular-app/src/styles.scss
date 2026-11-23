@@ -1,1 +1,42 @@
-/* You can add global styles to this file, and also import other style files */
+/* Design System: semantic tokens shared by every screen. */
+:root {
+  color-scheme: light;
+  --color-primary: #245bdc;
+  --color-primary-hover: #1845b0;
+  --color-primary-soft: #edf3ff;
+  --color-canvas: #f6f8fc;
+  --color-surface: #fff;
+  --color-text: #172640;
+  --color-muted: #5d6c83;
+  --color-border: #e3e9f2;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-card: 0 4px 20px #233c6505;
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --font-body: 'Segoe UI', Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--color-canvas); color: var(--color-text); font: 1rem/1.6 var(--font-body); }
+button, input, textarea, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+button { cursor: pointer; }
+a { color: inherit; }
+button:disabled { cursor: not-allowed; }
+:focus-visible { outline: 3px solid #245bdc; outline-offset: 4px; }
+h1, h2, h3, h4, p { margin-top: 0; }
+h1, h2, h3, h4 { line-height: 1.25; }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 46px; padding: .7rem 1.15rem; border: 1px solid transparent; border-radius: var(--radius-sm); font-weight: 600; text-decoration: none; transition: background .18s, box-shadow .18s; }
+.button-primary { color: white; background: var(--color-primary); box-shadow: 0 4px 9px #245bdc20; }
+.button-primary:hover { background: var(--color-primary-hover); }
+.button-secondary { background: white; border-color: var(--color-border); color: var(--color-text); }
+.button-secondary:hover { background: var(--color-primary-soft); }
+.eyebrow { color: var(--color-primary); font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); box-shadow: var(--shadow-card); }
+.muted { color: var(--color-muted); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }

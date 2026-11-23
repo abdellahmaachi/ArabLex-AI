@@ -1,0 +1,23 @@
+<app-tool-header icon="layers" title="Classification juridique" description="Identifiez le domaine d’un texte et consultez les probabilités proposées par le modèle." />
+<div class="analysis-layout">
+  <form #form="ngForm" (ngSubmit)="submit(form)" [attr.aria-busy]="state.loading()">
+    <div class="panel-heading"><app-icon name="document" /><h2>Votre document</h2></div>
+    <label for="classification-text">Texte à analyser</label><textarea id="classification-text" name="text" dir="auto" [(ngModel)]="text" required placeholder="Collez votre texte juridique ici…"></textarea>
+    <div class="input-meta"><span>Arabe et anglais</span><span>{{ text.length }} caractères</span></div>
+    <button type="submit" [disabled]="form.invalid || !text.trim() || state.loading()"><app-icon name="layers" />{{ state.loading() ? 'Analyse en cours…' : 'Classer le texte' }}</button>
+    <app-request-status [loading]="state.loading()" [error]="state.error()" />
+  </form>
+  <section class="result-panel" aria-label="Résultats" aria-live="polite">
+    <div class="panel-heading"><app-icon name="layers" /><h2>Résultat de l’analyse</h2></div>
+    @if (state.result(); as result) {
+      <div class="prediction"><span>CLASSE PRÉDITE</span><h3 lang="ar" dir="rtl">{{ result.label | classLabel }}</h3><p>Catégorie proposée par le modèle de classification</p></div>
+      <h4>Répartition des probabilités</h4>
+      <table><thead><tr><th lang="ar" dir="rtl">الصنف</th><th>Probabilité</th></tr></thead><tbody>
+      @for (entry of result.probabilities | keyvalue; track entry.key) {
+        <tr><td lang="ar" dir="rtl">{{ entry.key | classLabel }}</td><td><span>{{ entry.value | percent:'1.1-2' }}</span><progress [value]="entry.value" max="1" [attr.aria-label]="entry.key | classLabel"></progress></td></tr>
+      }</tbody></table>
+    } @else {
+      <div class="empty-state"><span class="empty-icon"><app-icon name="layers" /></span><h3>Un texte, un domaine juridique.</h3><p>La classe et les probabilités apparaîtront ici après l’analyse.</p><div class="chips"><span lang="ar">الأسرة والميراث</span><span lang="ar">العقار</span></div></div>
+    }
+  </section>
+</div>

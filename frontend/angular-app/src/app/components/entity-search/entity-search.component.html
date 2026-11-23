@@ -1,0 +1,19 @@
+<app-tool-header icon="entities" title="Entités juridiques" description="Retrouvez les personnes, institutions et références présentes dans vos documents juridiques." />
+<form #form="ngForm" (ngSubmit)="submit(form)" [attr.aria-busy]="state.loading()">
+  <label for="entity-text">Entité à retrouver</label><textarea class="search-field" id="entity-text" name="text" dir="auto" [(ngModel)]="text" required placeholder="Par exemple : محكمة النقض"></textarea>
+  <div class="filters"><label>Nombre de résultats<input name="k" type="number" [(ngModel)]="k" required min="1" step="1" pattern="[0-9]+"></label><label>Type d’entité<input name="label" [(ngModel)]="label" placeholder="Facultatif"></label><label>Classe<select name="className" [(ngModel)]="className"><option value="">Toutes les classes</option><option value="family_inheritance">الأسرة والميراث</option><option value="real_estate">العقار</option></select></label></div>
+  <button type="submit" [disabled]="form.invalid || !text.trim() || state.loading()"><app-icon name="entities" />{{ state.loading() ? 'Recherche en cours…' : 'Rechercher l’entité' }}</button>
+</form>
+<app-request-status [loading]="state.loading()" [error]="state.error()" />
+<section class="result-panel" aria-label="Résultats" aria-live="polite">
+@if (state.result(); as result) {
+  <div class="results-heading"><h2>{{ result.results.length }} document(s) trouvé(s)</h2><span class="chip" dir="auto">{{ result.text }}</span></div>
+  @for (hit of result.results; track hit.id) {
+    <article class="document-card"><div class="document-heading"><span class="document-icon"><app-icon name="document" /></span><div><h3 dir="auto">{{ hit.filename || hit.id }}</h3><span class="document-category" dir="auto">{{ hit.class | classLabel }}</span></div></div>
+    <div class="entity-list">@for (entity of hit.entities; track $index) {<span class="entity-chip"><bdi>{{ entity.text }}</bdi><small>{{ entity.label }}</small><span class="entity-position">{{ entity.start }}–{{ entity.end }}</span></span>}</div>
+    <p class="excerpt" dir="auto">{{ hit.text }}</p><details><summary>Lire le document complet</summary><p class="text" dir="auto">{{ hit.text }}</p></details></article>
+  } @empty { <div class="empty-state"><app-icon name="entities" /><h3>Aucune occurrence trouvée.</h3><p>Vérifiez le texte de l’entité ou modifiez les filtres.</p></div> }
+} @else {
+  <div class="empty-state"><span class="empty-icon"><app-icon name="entities" /></span><h3>Reliez les entités à leurs documents.</h3><p>Les occurrences et leur contexte s’afficheront ici.</p></div>
+}
+</section>
