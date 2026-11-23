@@ -75,3 +75,9 @@ coverage/
 .idea/
 .DS_Store
 Thumbs.db
+# ======================================
+# 10. SCRIPTS
+# ======================================
+scripts/augmented_ner_data.py
+scripts/generate_synthetic_ner.py
+scripts/validate_synthetic_ner.py

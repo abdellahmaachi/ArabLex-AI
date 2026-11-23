@@ -10,11 +10,14 @@ requires-python = ">=3.11,<3.13"
 
 dependencies = [
     "numpy",
+    "scipy",
     "scikit-learn",
+    "nltk",
     "joblib",
     "fastapi",
     "uvicorn[standard]",
     "pydantic",
+    "pydantic-settings>=2.9,<3",
     "qdrant-client",
     "google-genai"
 ]

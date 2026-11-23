@@ -31,6 +31,7 @@ class QdrantStore:
     def __init__(
         self, path: str | Path | None = None, *, dimension: int,
         collection_name: str = "legal_passages",
+        create_if_missing: bool = True,
     ) -> None:
         if type(dimension) is not int or dimension < 1:
             raise ValueError("dimension doit être un entier strictement positif")
@@ -39,6 +40,8 @@ class QdrantStore:
         self.dimension = dimension
         self.collection_name = collection_name
         self._closed = False
+        if not create_if_missing and (path is None or not Path(path).is_dir()):
+            raise FileNotFoundError("Stockage Qdrant existant requis")
         self._client = (
             QdrantClient(location=":memory:") if path is None
             else QdrantClient(path=str(Path(path).resolve()))
@@ -51,6 +54,8 @@ class QdrantStore:
                 ):
                     raise ValueError("Collection incompatible : dimension ou distance différente")
             else:
+                if not create_if_missing:
+                    raise ValueError("Collection Qdrant introuvable")
                 self._client.create_collection(
                     collection_name=collection_name,
                     vectors_config=models.VectorParams(size=dimension, distance=models.Distance.COSINE),
