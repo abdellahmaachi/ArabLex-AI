@@ -81,3 +81,16 @@ Thumbs.db
 scripts/augmented_ner_data.py
 scripts/generate_synthetic_ner.py
 scripts/validate_synthetic_ner.py
+
+# ======================================
+# 11. Testes
+# ======================================
+# Ignore additional test files
+tests/test_*.py
+
+# Keep main test files
+!tests/test_common.py
+!tests/test_lexical.py
+!tests/test_classification.py
+!tests/test_ner.py
+!tests/test_rag.py
